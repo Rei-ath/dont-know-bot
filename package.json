@@ -1,0 +1,23 @@
+{
+  "name": "dont-know-bot",
+  "version": "1.0.0",
+  "description": "this is just a test",
+  "main": "index.js",
+  "scripts": {
+    "start": "node deploy-commands.js && node index.js"
+  },
+  "keywords": [
+    "bot",
+    "discord"
+  ],
+  "author": "rei",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.35.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "openai": "^3.2.1"
+  }
+}
