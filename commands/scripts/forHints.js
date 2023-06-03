@@ -15,7 +15,8 @@ module.exports = {
 			hintIndices = hintIndices.filter(element1 => (element1));
 			console.log(hintIndices);
 			const matchedAnimeNames = [];
-			for (const element of guessesJSON) {
+			const titles = guessesJSON.titles
+			for (const element of titles) {
 				if (element) {
 					const isEvery = hintIndices.every((item) => element.includes(item) && element.indexOf(item) === hintString.indexOf(item));
 					if (isEvery && hintString.length === element.length) {
@@ -32,7 +33,7 @@ module.exports = {
 				return { embeds: [animeEmbedList] };
 			}
 			else {
-				for (const element of guessesJSON) {
+				for (const element of titles) {
 					if (element) {
 						const isEvery = hintIndices.every(item => element.includes(item));
 						if (isEvery) {
