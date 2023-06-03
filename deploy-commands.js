@@ -57,6 +57,7 @@ async function deleteCmd() {
 	}
 }
 // deployCmd();
-
-deleteCmd();
-deployCmd();
+(async () => {
+await deleteCmd();
+await deployCmd();
+})();
