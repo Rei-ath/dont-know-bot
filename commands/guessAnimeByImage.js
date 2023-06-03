@@ -11,11 +11,14 @@ module.exports = {
 			option.setName('toggle')
 				.setDescription('Start or stop guessing anime by image')
 				.setRequired(true)),
-	async executeInteractionCmd(funcParams) {
+	async execute(funcParams) {
+
 		const interaction = funcParams.interaction;
 		const client = funcParams.client;
-		guessAnimeByImgEnabled = interaction.options.getBoolean('toggle');
+		
 		if (interaction) {
+guessAnimeByImgEnabled = interaction.options.getBoolean('toggle');
+
 			if (!guessAnimeByImgEnabled) return await interaction.reply('Guess anime stopped');
 			await interaction.reply('Guess anime started');
 			client.on("messageCreate", async message => {
