@@ -31,7 +31,7 @@ To run the Don't Know Bot, follow these steps:
   ```
 - Replace the placeholder values (`YOUR_DISCORD_BOT_TOKEN`, `YOUR_DISCORD_CLIENT_ID`, `YOUR_DISCORD_GUILD_ID`, and `YOUR_OPENAI_API_TOKEN`) with the actual credentials.
 
-4. Start the bot:
+4. Start the bot: `node index.js`
 
 
 
