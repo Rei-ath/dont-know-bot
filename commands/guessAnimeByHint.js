@@ -13,7 +13,7 @@ module.exports = {
 		const interaction = funcParams.interaction;
 		const client = funcParams.client;
 		if (interaction) {
-			guessAnimeByHintEnabled = interaction.options.getBoolean('toggle');
+			const guessAnimeByHintEnabled = interaction.options.getBoolean('toggle');
 			if (!guessAnimeByHintEnabled) {
 				return await interaction.reply('Guess anime stopped');
 			}
@@ -34,7 +34,7 @@ module.exports = {
 		}
 		else {
 			try {
-				let guessAnimeByHintEnabled = funcParams.boolean;
+				const guessAnimeByHintEnabled = funcParams.boolean;
 				if (!guessAnimeByHintEnabled) return await funcParams.message.channel.send('anime stopped');
 				console.log('started');
 				await funcParams.message.reply('started');
