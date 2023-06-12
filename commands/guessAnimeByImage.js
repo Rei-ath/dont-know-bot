@@ -1,7 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { animeImg } = require('./scripts/forImages');
-let guessAnimeByImgEnabled = true;
-
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -15,9 +13,9 @@ module.exports = {
 
 		const interaction = funcParams.interaction;
 		const client = funcParams.client;
-		
+
 		if (interaction) {
-guessAnimeByImgEnabled = interaction.options.getBoolean('toggle');
+			const guessAnimeByImgEnabled = interaction.options.getBoolean('toggle');
 
 			if (!guessAnimeByImgEnabled) return await interaction.reply('Guess anime stopped');
 			await interaction.reply('Guess anime started');
@@ -36,7 +34,7 @@ guessAnimeByImgEnabled = interaction.options.getBoolean('toggle');
 		}
 		else {
 			try {
-				guessAnimeByImgEnabled = funcParams.boolean;
+				const guessAnimeByImgEnabled = funcParams.boolean;
 				if (!guessAnimeByImgEnabled) return;
 				console.log('started');
 				await funcParams.message.reply('started');

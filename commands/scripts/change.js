@@ -1,7 +1,6 @@
 const axios = require('axios');
 
 async function changeAvUsername() {
-// axios.get(imageUrl, { responseType: 'arraybuffer' })
 	try {
 		const imagePath = await axios.get('https://cdn.waifu.im/6929.jpg', { responseType: 'arraybuffer' });
 		const imageBuffer = Buffer.from(imagePath.data, 'binary');
