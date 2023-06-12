@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { guessNow } = require('./scripts/forHints');
-let guessAnimeByHintEnabled = false;
+
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -34,8 +34,8 @@ module.exports = {
 		}
 		else {
 			try {
-				guessAnimeByHintEnabled = funcParams.boolean;
-				if (!guessAnimeByHintEnabled) { return await funcParams.message.channel.send('anime stopped');}
+				let guessAnimeByHintEnabled = funcParams.boolean;
+				if (!guessAnimeByHintEnabled) return await funcParams.message.channel.send('anime stopped');
 				console.log('started');
 				await funcParams.message.reply('started');
 				client.on("messageCreate", async (message) => {

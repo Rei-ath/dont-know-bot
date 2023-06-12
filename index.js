@@ -44,7 +44,7 @@ client.on('interactionCreate', async interaction => {
 			'interaction':interaction,
 			'client':client,
 		};
-		await command.execute(funcParams);
+		return await command.execute(funcParams);
 	}
 	catch (error) {
 		console.error(error);
@@ -76,7 +76,7 @@ client.on('messageCreate', async message => {
 			console.log('stopped');
 			await message.reply('stopped');
 			funcParams.boolean = false;
-			return await command.executeMsgCmd(funcParams);
+			return await command.execute(funcParams);
 		}
 		return await command.execute(funcParams);
 	}

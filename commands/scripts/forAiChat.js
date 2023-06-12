@@ -7,7 +7,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 const responseEmbedd = new EmbedBuilder()
 	.setThumbnail('https://cdn.discordapp.com/avatars/1024877744284258364/6f9f1bc9f3e1347c4a793db9df028843.webp')
-	.setFooter({ text: 'Jang <3 |', iconURL: 'https://cdn.discordapp.com/avatars/991218096541020220/2893b364fb9f5058b7ae563ef73ccaac.webp?' })
+	.setFooter({ text: 'Jang <3 ||', iconURL: 'https://cdn.discordapp.com/avatars/991218096541020220/2893b364fb9f5058b7ae563ef73ccaac.webp?' })
 	.setTimestamp();
 let prompt, user_id, user_avatar, username, withoutPrefix, message;
 
