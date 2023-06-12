@@ -17,8 +17,8 @@ module.exports = {
 			}
 		}
 		catch (error) {
-			funcParams.message.send('emotional damage in refresh.js executeInteractionCmd()');
-			console.log('emotional damage in refresh.js executeInteractionCmd()');
+			funcParams.message.channel.send('emotional damage in refresh.js executeInteractionCmd()');
+			console.log(error);
 		}
 	},
 };

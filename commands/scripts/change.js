@@ -24,4 +24,4 @@ async function changeAvUsername(link) {
 	}
 }
 // changeAvUsername();
-module.exports = changeAvUsername;
+module.exports = { changeAvUsername };
