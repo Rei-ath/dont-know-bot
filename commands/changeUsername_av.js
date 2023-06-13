@@ -30,7 +30,7 @@ module.exports = {
 				withoutPrefix.shift();
 				const link = withoutPrefix.join(' ');
 				const result = await changeAvUsername(link);
-				console.log(result);
+				//console.log(result);
 				return await message.channel.send('done change');
 			}
 			catch (error) {
