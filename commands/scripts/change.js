@@ -12,10 +12,12 @@ async function changeAvUsername(link) {
 			return await img.url;
 		};
 		const imgPath = await (link ? link : getRandomWaifu());
+    console.log(imgPath)
 		const imgResponse = await axios.get(imgPath, { responseType: 'arraybuffer' });
-		const imageBuffer = Buffer.from(imgResponse.data, 'binary');
+    console.log(imgResponse.data)
+		const imageBuffer =  Buffer.from(imgResponse.data, 'binary');
 		const base64Image = imageBuffer.toString('base64');
-		const dataUrl = `data:image/jpeg;base64,${base64Image}`;
+		const dataUrl =  `data:image/jpeg;base64,${base64Image}`;
 		const data = {
 			username: "Dont know bot",
 			avatar: dataUrl,
@@ -32,4 +34,8 @@ async function changeAvUsername(link) {
 		console.log(e);
 	}
 }
+<<<<<<< HEAD
+=======
+// changeAvUsername('https://i.waifu.pics/vi9hgee.jp')
+>>>>>>> 8d031bc0c17fb2fe2e40d9b6d4bd597c6d35b82d
 module.exports = { changeAvUsername };
