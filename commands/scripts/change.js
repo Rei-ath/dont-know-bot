@@ -32,5 +32,5 @@ async function changeAvUsername(link) {
 		console.log(e);
 	}
 }
-changeAvUsername();
+// changeAvUsername();
 module.exports = { changeAvUsername };
