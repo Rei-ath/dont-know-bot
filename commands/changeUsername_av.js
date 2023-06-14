@@ -7,18 +7,14 @@ module.exports = {
 		.setDescription('picture')
 		.addStringOption(option => option
 			.setName('q')
-			.setDescription('enter ur link')
-			.setRequired(true)),
+			.setDescription('enter ur link')),
 	async execute(funcParams) {
 		const interaction = funcParams.interaction;
-		const message = funcParams.message;
 		if (interaction) {
 			try {
 				const link = await interaction.options.getString('q');
-				// console.log(result);
 				await interaction.reply('wait bro');
-				await changeAvUsername(link);
-				return await interaction.channel.send('done channge') ;
+				return await changeAvUsername(link);
 			}
 			catch (error) {
 				console.error(error);
@@ -29,8 +25,7 @@ module.exports = {
 				const withoutPrefix = funcParams.withoutPrefix;
 				withoutPrefix.shift();
 				const link = withoutPrefix.join(' ');
-				const result = await changeAvUsername(link);
-				return await message.channel.send('done change');
+				return await changeAvUsername(link);
 			}
 			catch (error) {
 				console.error(error);
