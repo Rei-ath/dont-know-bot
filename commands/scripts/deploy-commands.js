@@ -2,10 +2,10 @@ const { REST, Routes } = require('discord.js');
 const { clientId, token } = require('../../config.json');
 const fs = require('node:fs');
 const path = require('node:path');
-// console.log(path)
 const commands = [];
-const commandsPath = path.join(__dirname,'../');
+const commandsPath = path.join(__dirname, '../');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
 async function deployCmd() {
 	try {
 		for (const file of commandFiles) {
@@ -28,4 +28,6 @@ async function deployCmd() {
 	}
 }
 
-module.exports = { deployCmd };
+module.exports = {
+	deployCmd,
+};
