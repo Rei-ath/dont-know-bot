@@ -3,13 +3,13 @@ const { clientId, token } = require('../config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 const commands = [];
-const commandsPath = path.join(__dirname, '../');
+const commandsPath = path.join(__dirname, '../commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 async function deployCmd() {
 	try {
 		for (const file of commandFiles) {
-			const command = require(`../${file}`);
+			const command = require(`../commands/${file}`);
 			console.log(command);
 			console.log(file);
 			commands.push(command.data.toJSON());

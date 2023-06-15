@@ -5,7 +5,6 @@ const { deployCmd } = require('../scripts/deploy-commands');
 const data = new SlashCommandBuilder()
 	.setName('refresh')
 	.setDescription('refreshes the commands');
-
 async function execute(funcParams) {
 	try {
 		if (funcParams.interaction) {

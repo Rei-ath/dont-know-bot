@@ -4,6 +4,7 @@ const { sfw, nsfw } = require('../src/waifuApi.json');
 
 async function changeAvUsername(arg) {
 	try {
+		console.log(arg)
 		const RandomInt = (max) => Math.floor(Math.random() * max);
 		const getRandomWaifu = async () => {
 			if (!arg) {
@@ -30,6 +31,7 @@ async function changeAvUsername(arg) {
 			return img.url;
 		};
 		const imgPath = arg?.includes('http') ? arg : await getRandomWaifu();
+		console.log(imgPath)
 		const imgResponse = await axios.get(imgPath, { responseType: 'arraybuffer' });
 		const imageBuffer = Buffer.from(imgResponse.data, 'binary');
 		const base64Image = imageBuffer.toString('base64');
@@ -45,7 +47,7 @@ async function changeAvUsername(arg) {
 		return request;
 	}
 	catch (e) {
-		console.log(e);
+		console.log(e.url);
 	}
 }
 
