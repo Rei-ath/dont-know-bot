@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { animeImg } = require('./scripts/forImages');
+const { animeImg } = require('../scripts/forImages');
 
 
 const data = new SlashCommandBuilder()

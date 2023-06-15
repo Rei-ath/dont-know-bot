@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { guessNow } = require('./scripts/forHints');
+const { guessNow } = require('../scripts/forHints');
 
 
 const data = new SlashCommandBuilder()

@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { titles } = require('../../src/guesses.json');
+const { titles } = require('../src/guesses.json');
 
 
 async function guessNow(hintMessage) {

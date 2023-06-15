@@ -1,4 +1,4 @@
-const { openAiToken } = require('../../config.json');
+const { openAiToken } = require('../config.json');
 const { Configuration, OpenAIApi } = require("openai");
 const { EmbedBuilder, bold } = require('discord.js');
 const configuration = new Configuration({

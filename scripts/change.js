@@ -1,6 +1,6 @@
 const axios = require('axios');
-const { auth, clientId } = require('../../config.json');
-const { sfw, nsfw } = require('../../src/waifuApi.json');
+const { auth, clientId } = require('../config.json');
+const { sfw, nsfw } = require('../src/waifuApi.json');
 
 async function changeAvUsername(arg) {
 	try {

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, codeBlock } = require('discord.js');
-const { answer } = require('./scripts/forAiChat');
+const { answer } = require('../scripts/forAiChat');
 
 
 const data = new SlashCommandBuilder()

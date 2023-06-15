@@ -1,6 +1,5 @@
-const { changeAvUsername } = require('./scripts/change');
 const { SlashCommandBuilder } = require('discord.js');
-
+const { changeAvUsername } = require('../scripts/change');
 
 const data = new SlashCommandBuilder()
 	.setName('change')

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { deployCmd } = require('./scripts//deploy-commands');
+const { deployCmd } = require('../scripts/deploy-commands');
 
 
 const data = new SlashCommandBuilder()

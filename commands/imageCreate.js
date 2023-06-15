@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { image } = require('./scripts/forAiChat');
+const { image } = require('../scripts/forAiChat');
 
 
 const data = new SlashCommandBuilder()
@@ -39,6 +39,6 @@ async function execute(funcParams) {
 }
 
 module.exports = {
-	data,execute,
+	data, execute,
 };
 
