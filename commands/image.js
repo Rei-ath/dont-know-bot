@@ -1,13 +1,13 @@
-const { SlashCommandBuilder, codeBlock } = require('discord.js');
-const { getAnswer } = require('../scripts/openAiQuerryHandler');
+const { SlashCommandBuilder } = require('discord.js');
+const { getImage } = require('../scripts/openAiQuerryHandler');
 
 
 const data = new SlashCommandBuilder()
-	.setName('ask')
-	.setDescription('ask anything UwU.')
+	.setName('image')
+	.setDescription('make any image UwU.')
 	.addStringOption(option => option
-		.setName('q')
-		.setDescription('enter ur prompt here')
+		.setName('d')
+		.setDescription('enter ur desciption here')
 		.setRequired(true));
 
 async function execute(funcParams) {
@@ -19,8 +19,7 @@ async function execute(funcParams) {
 	try {
 		const targetReply = interaction || message;
 		await targetReply.reply('wait bro');
-		const result = await getAnswer(prompt);
-		codeBlock(result);
+		const result = await getImage(prompt);
 		result.data.author = {
 			icon_url: `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`,
 			name: (id === '532798408340144148') ? '~ Rei' : username,
@@ -35,3 +34,4 @@ async function execute(funcParams) {
 module.exports = {
 	data, execute,
 };
+

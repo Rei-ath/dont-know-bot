@@ -20,9 +20,10 @@ async function execute(funcParams) {
 		client.on("messageCreate", async message => {
 			try {
 				if (message.author.id == "429656936435286016" && (guessAnimeByImgEnabled)) {
-					console.log('interactoion laga');
-					const responseEmbedd = await animeImg(message);
-					return await message.reply(responseEmbedd) ;
+					console.log('interactoion on');
+					const { image: { url } } = message.embeds[0];
+					const responseEmbedd = await animeImg(url);
+					return await message.reply({ embeds: [responseEmbedd] });
 				}
 			}
 			catch {
@@ -39,9 +40,10 @@ async function execute(funcParams) {
 			client.on('messageCreate', async (message) => {
 				try {
 					if (message.author.id == "429656936435286016" && guessAnimeByImgEnabled) {
-						console.log('message laga');
-						const responseEmbedd = await animeImg(message);
-						return await message.reply(responseEmbedd) ;
+						console.log('message on');
+						const { image: { url } } = message.embeds[0];
+						const responseEmbedd = await animeImg(url);
+						return await message.reply({ embeds: [responseEmbedd] });
 					}
 				}
 				catch {

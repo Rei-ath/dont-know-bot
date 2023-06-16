@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { changeAvUsername } = require('../scripts/change');
+const { changeAvatar } = require('../scripts/changeAv');
 
 const data = new SlashCommandBuilder()
 	.setName('change')
@@ -44,16 +44,16 @@ async function execute(funcParams) {
 			if (argsLink) {
 				if (argsLink.includes(' ')) return interaction.channel.reply('no whitespaces allowed');
 				console.log(argsLink, 'arglll');
-				return await changeAvUsername(argsLink);
+				return await changeAvatar(argsLink);
 			}
 			if (argsKeyword?.includes(' ')) return interaction.channel.reply('no whitespaces allowed');
 			if (bool) {
 				const updatedArgsKeyword = argsKeyword ? `${argsKeyword} n` : `n`;
 				await interaction.reply('wait bro inside');
-				return await changeAvUsername(updatedArgsKeyword);
+				return await changeAvatar(updatedArgsKeyword);
 			}
 			await interaction.reply('wait bro outside');
-			return await changeAvUsername(argsKeyword);
+			return await changeAvatar(argsKeyword);
 
 		}
 		catch (error) {
@@ -65,7 +65,7 @@ async function execute(funcParams) {
 			const withoutPrefix = funcParams.withoutPrefix;
 			withoutPrefix.shift();
 			const args = withoutPrefix.join(' ');
-			return await changeAvUsername(args);
+			return await changeAvatar(args);
 		}
 		catch (error) {
 			console.error(error);

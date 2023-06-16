@@ -24,7 +24,7 @@ async function execute(funcParams) {
 				if (message.author.id == "429656936435286016" && hintMessage.includes("Hint") && guessAnimeByHintEnabled) {
 					console.log(hintMessage);
 					const responseEmbedd = await guessNow(hintMessage);
-					return await message.reply(responseEmbedd) ;
+					return await message.reply({ embeds:[responseEmbedd] }) ;
 				}
 			}
 			catch {
@@ -35,7 +35,7 @@ async function execute(funcParams) {
 	else {
 		try {
 			const guessAnimeByHintEnabled = funcParams.boolean;
-			if (!guessAnimeByHintEnabled) return await funcParams.message.channel.send('anime stopped');
+			if (!guessAnimeByHintEnabled) return await funcParams.message.channel.send('anime by hint stopped');
 			console.log('started');
 			await funcParams.message.reply('started');
 			client.on("messageCreate", async (message) => {
@@ -44,7 +44,7 @@ async function execute(funcParams) {
 					if (message.author.id == "429656936435286016" && hintMessage.includes("Hint") && guessAnimeByHintEnabled) {
 						console.log(hintMessage);
 						const responseEmbedd = await guessNow(hintMessage);
-						return await message.reply(responseEmbedd) ;
+						return await message.reply({ embeds:[responseEmbedd] }) ;
 					}
 				}
 				catch {

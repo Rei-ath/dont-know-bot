@@ -1,12 +1,12 @@
 const { EmbedBuilder } = require('discord.js');
 
 
-async function animeImg(message) {
+async function animeImg(url) {
 	try {
-		const { image: { url } } = message.embeds[0];
-		const data = await fetch(`https://api.trace.moe/search?anilistInfo&url=${encodeURIComponent(url)}`).then(response => response.json());
-		const titles = data.result.map(item => item.anilist.title.english).filter(title => title !== null);
-		const reiBrain = titles.join(",\n ");
+		const data = await fetch(`https://api.trace.moe/search?anilistInfo&url=${encodeURIComponent(url)}`).then(response =>
+			response.ok ? response.json() : Promise.reject(new Error('API request failed.')));
+		const titles = data.result.map(item => item.anilist.title.english).filter(Boolean);
+		const reiBrain = titles.join(",\n");
 		console.log(reiBrain);
 		const animeEmbedList = new EmbedBuilder()
 			.setColor('Random')
@@ -15,7 +15,7 @@ async function animeImg(message) {
 			.setThumbnail('https://cdn.discordapp.com/emojis/1047138942945853440.webp')
 			.setFooter({ text: 'Jang Cutest', iconURL: 'https://cdn.discordapp.com/emojis/1048596660093190164.webp' })
 			.setTimestamp();
-		return { embeds: [animeEmbedList] };
+		return animeEmbedList;
 	}
 	catch (error) {
 		console.log('Error:');
