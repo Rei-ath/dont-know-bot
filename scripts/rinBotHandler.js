@@ -44,6 +44,7 @@ async function guessByHints(hintMessage) {
 				console.log(matchedAnimeNames.length, 'nothing');
 			}
 		}
+		console.log(animeEmbedList)
 		return animeEmbedList;
 	}
 	catch (error) {
@@ -58,7 +59,6 @@ async function guessByImage(url) {
 			response.ok ? response.json() : Promise.reject(new Error('API request failed.')));
 		const titlesFromApi = data.result.map(item => item.anilist.title.english).filter(Boolean);
 		const reiBrain = titlesFromApi.join(",\n");
-		console.log(reiBrain);
 		const animeEmbedList = new EmbedBuilder()
 			.setColor('Random')
 			.setTitle('BY image <:aaaaaaaaaaaaaaaaaa:1028855240293888100>')

@@ -73,8 +73,6 @@ client.on('messageCreate', async message => {
 			'boolean':true,
 		};
 		if (withoutPrefix[1] == 'off') {
-			console.log('stopped');
-			await message.reply('stopped');
 			funcParams.boolean = false;
 			return await command.execute(funcParams);
 		}

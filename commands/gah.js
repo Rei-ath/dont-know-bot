@@ -9,54 +9,38 @@ const data = new SlashCommandBuilder()
 		.setDescription('Start or stop guessing anime from hints')
 		.setRequired(true));
 
-async function execute(funcParams) {
-	const interaction = funcParams.interaction;
-	const client = funcParams.client;
-	if (interaction) {
-		const guessAnimeByHintEnabled = interaction.options.getBoolean('toggle');
-		if (!guessAnimeByHintEnabled) {
-			return await interaction.reply('Guess anime stopped');
+const eventEmitter = async msg => {
+	try {
+		const { title } = msg.embeds[0];
+		console.log(title);
+		if (msg.author.id == "429656936435286016" && title.includes("Hint")) {
+			const responseEmbedd = await guessByHints(title);
+			console.log(responseEmbedd);
+			return await msg.reply({ embeds: [responseEmbedd] });
 		}
-		await interaction.reply('Guess anime started');
-		client.on("messageCreate", async (message) => {
-			try {
-				const hintMessage = message.embeds[0].data.title;
-				if (message.author.id == "429656936435286016" && hintMessage.includes("Hint") && guessAnimeByHintEnabled) {
-					console.log(hintMessage);
-					const responseEmbedd = await guessByHints(hintMessage);
-					return await message.reply({ embeds:[responseEmbedd] }) ;
-				}
-			}
-			catch {
-				console.log("this message doesnt have hint");
-			}
-		});
 	}
-	else {
-		try {
-			const guessAnimeByHintEnabled = funcParams.boolean;
-			if (!guessAnimeByHintEnabled) return await funcParams.message.channel.send('anime by hint stopped');
-			console.log('started');
-			await funcParams.message.reply('started');
-			client.on("messageCreate", async (message) => {
-				try {
-					const hintMessage = message.embeds[0].data.title;
-					if (message.author.id == "429656936435286016" && hintMessage.includes("Hint") && guessAnimeByHintEnabled) {
-						console.log(hintMessage);
-						const responseEmbedd = await guessByHints(hintMessage);
-						return await message.reply({ embeds:[responseEmbedd] }) ;
-					}
-				}
-				catch {
-					console.log("this message doesnt have hint");
-				}
-			});
+	catch {
+		console.log("message dont have hint");
+	}
+};
+
+async function execute(funcParams) {
+	const { interaction, client, boolean, message } = funcParams;
+	const guessAnimeByHintEnabled = interaction ? interaction.options.getBoolean('toggle') : boolean ;
+	const targetReply = interaction ? interaction : message;
+	try {
+		if (!guessAnimeByHintEnabled) {
+			client.off('messageCreate', eventEmitter);
+			return await targetReply.reply('Guess anime stopped');
 		}
-		catch (error) {
-			console.log('emptional damage in gah.js');
-		}
+		await targetReply.reply('Guess anime started');
+		return await client.on('messageCreate', eventEmitter);
+	}
+	catch {
+		console.log('emptional damage in gah.js');
 	}
 }
+
 module.exports = {
 	data, execute,
 };
