@@ -11,52 +11,32 @@ const data = new SlashCommandBuilder()
 			.setRequired(true));
 
 async function execute(funcParams) {
-	const interaction = funcParams.interaction;
-	const client = funcParams.client;
-	if (interaction) {
-		const guessAnimeByImgEnabled = interaction.options.getBoolean('toggle');
-		if (!guessAnimeByImgEnabled) return await interaction.reply('Guess anime stopped');
-		await interaction.reply('Guess anime started');
-		client.on("messageCreate", async message => {
-			try {
-				if (message.author.id == "429656936435286016" && (guessAnimeByImgEnabled)) {
-					console.log('interactoion on');
+	const {interaction,client,boolean, message} = funcParams;
+  const guessAnimeByImgEnabled  = interaction ? interaction.options.getBoolean('toggle') : boolean ;
+const targetReply = interaction ? interaction : message;
+  try{
+		if (!guessAnimeByImgEnabled) return await targetReply.reply('Guess anime stopped');
+		await targetReply.reply('Guess anime started');
+    const eventEmiter = async msg => {
+				try {
+      if (msg.author.id == "429656936435286016" && (guessAnimeByImgEnabled)) {
 					const { image: { url } } = message.embeds[0];
 					const responseEmbedd = await guessByimage(url);
-					return await message.reply({ embeds: [responseEmbedd] });
+        console.log(`${responseEmbedd}`);
+					return await msg.reply({ embeds: [responseEmbedd] });
 				}
-			}
-			catch {
-				console.log("this message doesnt have imange");
-			}
-		});
-	}
-	else {
-		try {
-			const guessAnimeByImgEnabled = funcParams.boolean;
-			if (!guessAnimeByImgEnabled) return;
-			console.log('started');
-			await funcParams.message.reply('started');
-			client.on('messageCreate', async (message) => {
-				try {
-					if (message.author.id == "429656936435286016" && guessAnimeByImgEnabled) {
-						console.log('message on');
-						const { image: { url } } = message.embeds[0];
-						const responseEmbedd = await guessByimage(url);
-						return await message.reply({ embeds: [responseEmbedd] });
-					}
-				}
-				catch {
-					console.log("this message doesnt have imange");
-				}
-			});
+        }
+      catch(e){
+        console.log(e);
+      }
+    }
+return await client.on('messageCreate',eventEmiter)
 		}
-		catch {
-			console.log('emptional damage in gai.js');
-		}
-	}
-}
 
+catch(e){
+			console.log('emptional damage in gai.js',e);
+}
+}
 module.exports = {
 	data, execute,
 };
