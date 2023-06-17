@@ -52,13 +52,12 @@ async function guessByHints(hintMessage) {
 }
 
 
-
 async function guessByImage(url) {
 	try {
 		const data = await fetch(`https://api.trace.moe/search?anilistInfo&url=${encodeURIComponent(url)}`).then(response =>
 			response.ok ? response.json() : Promise.reject(new Error('API request failed.')));
-		const titles = data.result.map(item => item.anilist.title.english).filter(Boolean);
-		const reiBrain = titles.join(",\n");
+		const titlesFromApi = data.result.map(item => item.anilist.title.english).filter(Boolean);
+		const reiBrain = titlesFromApi.join(",\n");
 		console.log(reiBrain);
 		const animeEmbedList = new EmbedBuilder()
 			.setColor('Random')
@@ -73,7 +72,7 @@ async function guessByImage(url) {
 		console.log('Error:');
 	}
 }
-      
-module.exports = { 
-  guessByHints,guessByImage
+
+module.exports = {
+	guessByHints, guessByImage,
 };

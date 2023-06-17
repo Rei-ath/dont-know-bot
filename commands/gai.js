@@ -11,7 +11,7 @@ const data = new SlashCommandBuilder()
 			.setRequired(true));
 
 async function execute(funcParams) {
-	const interaction = funcParams.interaction;
+	const { interaction } = funcParams;
 	const client = funcParams.client;
 	if (interaction) {
 		const guessAnimeByImgEnabled = interaction.options.getBoolean('toggle');

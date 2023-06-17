@@ -6,10 +6,11 @@ const configuration = new Configuration({
 });
 const { getRandomWaifu } = require('./changeAv');
 const openai = new OpenAIApi(configuration);
-const responseEmbed = new EmbedBuilder()
-	.setTimestamp();
+
 
 async function getAnswer(prompt) {
+	const responseEmbed = new EmbedBuilder()
+		.setTimestamp();
 	try {
 		const response = await openai.createCompletion({
 			model: "text-davinci-003",
@@ -26,9 +27,9 @@ async function getAnswer(prompt) {
 		return responseEmbed;
 	}
 	catch (error) {
-		responseEmbed.setTitle(`${bold(prompt)}`)
+		responseEmbed.setTitle(bold(prompt))
 			.setThumbnail(await getRandomWaifu())
-			.setFooter({ text: 'Jang <3 ||', iconURL: await getRandomWaifu() })
+			.setFooter({ text: 'Jang <3 ||' })
 			.setDescription(`sorry error occured`);
 		return responseEmbed;
 	}
@@ -36,6 +37,8 @@ async function getAnswer(prompt) {
 
 
 async function getImage(prompt) {
+	const responseEmbed = new EmbedBuilder()
+		.setTimestamp();
 	try {
 		const response = await openai.createImage({
 			prompt:prompt,
