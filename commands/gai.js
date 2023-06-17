@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { animeImg } = require('../scripts/forImages');
+const { guessByimage } = require('../scripts/rinBotHandler');
 
 
 const data = new SlashCommandBuilder()
@@ -22,7 +22,7 @@ async function execute(funcParams) {
 				if (message.author.id == "429656936435286016" && (guessAnimeByImgEnabled)) {
 					console.log('interactoion on');
 					const { image: { url } } = message.embeds[0];
-					const responseEmbedd = await animeImg(url);
+					const responseEmbedd = await guessByimage(url);
 					return await message.reply({ embeds: [responseEmbedd] });
 				}
 			}
@@ -42,7 +42,7 @@ async function execute(funcParams) {
 					if (message.author.id == "429656936435286016" && guessAnimeByImgEnabled) {
 						console.log('message on');
 						const { image: { url } } = message.embeds[0];
-						const responseEmbedd = await animeImg(url);
+						const responseEmbedd = await guessByimage(url);
 						return await message.reply({ embeds: [responseEmbedd] });
 					}
 				}

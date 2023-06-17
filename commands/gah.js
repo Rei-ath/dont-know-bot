@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { guessNow } = require('../scripts/forHints');
+const { guessByHints } = require('../scripts/rinBotHandler');
 
 
 const data = new SlashCommandBuilder()
@@ -23,7 +23,7 @@ async function execute(funcParams) {
 				const hintMessage = message.embeds[0].data.title;
 				if (message.author.id == "429656936435286016" && hintMessage.includes("Hint") && guessAnimeByHintEnabled) {
 					console.log(hintMessage);
-					const responseEmbedd = await guessNow(hintMessage);
+					const responseEmbedd = await guessByHints(hintMessage);
 					return await message.reply({ embeds:[responseEmbedd] }) ;
 				}
 			}
@@ -43,7 +43,7 @@ async function execute(funcParams) {
 					const hintMessage = message.embeds[0].data.title;
 					if (message.author.id == "429656936435286016" && hintMessage.includes("Hint") && guessAnimeByHintEnabled) {
 						console.log(hintMessage);
-						const responseEmbedd = await guessNow(hintMessage);
+						const responseEmbedd = await guessByHints(hintMessage);
 						return await message.reply({ embeds:[responseEmbedd] }) ;
 					}
 				}
