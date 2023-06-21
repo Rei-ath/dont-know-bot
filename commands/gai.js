@@ -11,23 +11,23 @@ const data = new SlashCommandBuilder()
 			.setRequired(true));
 
 
-const eventEmitter = async msg => {
+const eventEmitter = async message => {
 	try {
-		if (msg.author.id == "429656936435286016") {
-			const { image: { url } } = msg.embeds[0];
+		if (message.author.id == "429656936435286016") {
+			const { image: { url } } = message.embeds[0];
 			console.log(url);
-			const responseEmbedd = await guessByImage(url);
-			return await msg.reply({ embeds: [responseEmbedd] });
+			const responseEmbed = await guessByImage(url);
+			return await message.reply({ embeds: [responseEmbed] });
 		}
 	}
 	catch {
-		console.log("message dont have img");
+		console.log("message dont have image");
 	}
 };
 
-async function execute(funcParams) {
-	const { interaction, client, boolean, message } = funcParams;
-	const guessAnimeByImgEnabled = interaction ? interaction.options.getBoolean('toggle') : boolean ;
+async function execute(commandParams) {
+	const { interaction, client, isOn, message } = commandParams;
+	const guessAnimeByImgEnabled = interaction ? interaction.options.getBoolean('toggle') : isOn ;
 	const targetReply = interaction ? interaction : message;
 	console.log(guessAnimeByImgEnabled);
 	try {
@@ -38,8 +38,8 @@ async function execute(funcParams) {
 		await targetReply.reply('Guess anime started');
 		return await client.on('messageCreate', eventEmitter);
 	}
-	catch {
-		console.log('emptional damage in gai.js');
+	catch (error) {
+		console.error(error);
 	}
 }
 module.exports = {

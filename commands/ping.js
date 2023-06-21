@@ -5,17 +5,17 @@ const data = new SlashCommandBuilder()
 	.setName('jang')
 	.setDescription('tells the fact');
 
-async function execute(funcParams) {
+async function execute(commandParams) {
 	try {
-		if (funcParams.interaction) {
-			return await funcParams.interaction.reply('shes the cutest');
+		if (commandParams.interaction) {
+			return await commandParams.interaction.reply('shes the cutest');
 		}
 		else {
-			return await funcParams.message.channel.send('shes the cutest');
+			return await commandParams.message.channel.send('shes the cutest');
 		}
 	}
 	catch (error) {
-		console.log('emotional damage in jang.js executeInteractionCmd()');
+		console.error(error);
 	}
 }
 

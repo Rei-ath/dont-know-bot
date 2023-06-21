@@ -6,7 +6,7 @@ const commands = [];
 const commandsPath = path.join(__dirname, '../commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-async function deployCmd() {
+async function refreshCommand() {
 	try {
 		for (const file of commandFiles) {
 			const command = require(`../commands/${file}`);
@@ -29,5 +29,5 @@ async function deployCmd() {
 }
 
 module.exports = {
-	deployCmd,
+	refreshCommand,
 };

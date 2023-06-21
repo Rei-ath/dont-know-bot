@@ -9,14 +9,14 @@ const data = new SlashCommandBuilder()
 		.setDescription('Start or stop guessing anime from hints')
 		.setRequired(true));
 
-const eventEmitter = async msg => {
+const eventEmitter = async message => {
 	try {
-		const { title } = msg.embeds[0];
+		const { title } = message.embeds[0];
 		console.log(title);
-		if (msg.author.id == "429656936435286016" && title.includes("Hint")) {
-			const responseEmbedd = await guessByHints(title);
-			console.log(responseEmbedd);
-			return await msg.reply({ embeds: [responseEmbedd] });
+		if (message.author.id == "429656936435286016" && title.includes("Hint")) {
+			const responseEmbed = await guessByHints(title);
+			console.log(responseEmbed);
+			return await message.reply({ embeds: [responseEmbed] });
 		}
 	}
 	catch {
@@ -24,9 +24,9 @@ const eventEmitter = async msg => {
 	}
 };
 
-async function execute(funcParams) {
-	const { interaction, client, boolean, message } = funcParams;
-	const guessAnimeByHintEnabled = interaction ? interaction.options.getBoolean('toggle') : boolean ;
+async function execute(commandParams) {
+	const { interaction, client, isOn, message } = commandParams;
+	const guessAnimeByHintEnabled = interaction ? interaction.options.getBoolean('toggle') : isOn ;
 	const targetReply = interaction ? interaction : message;
 	try {
 		if (!guessAnimeByHintEnabled) {
@@ -36,8 +36,8 @@ async function execute(funcParams) {
 		await targetReply.reply('Guess anime started');
 		return await client.on('messageCreate', eventEmitter);
 	}
-	catch {
-		console.log('emptional damage in gah.js');
+	catch (error) {
+		console.error(error);
 	}
 }
 

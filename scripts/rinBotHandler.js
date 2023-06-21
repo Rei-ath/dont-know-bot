@@ -44,11 +44,11 @@ async function guessByHints(hintMessage) {
 				console.log(matchedAnimeNames.length, 'nothing');
 			}
 		}
-		console.log(animeEmbedList)
+		console.log(animeEmbedList);
 		return animeEmbedList;
 	}
 	catch (error) {
-		console.log('emotional damage');
+		console.log(error);
 	}
 }
 
@@ -69,7 +69,7 @@ async function guessByImage(url) {
 		return animeEmbedList;
 	}
 	catch (error) {
-		console.log('Error:');
+		console.log(error);
 	}
 }
 

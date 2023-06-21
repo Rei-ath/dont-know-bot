@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 
 
@@ -28,7 +28,7 @@ catch (error) {
 }
 
 
-client.once(Events.ClientReady, async c => {
+client.once('ready', async c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
@@ -40,11 +40,11 @@ client.on('interactionCreate', async interaction => {
 		return;
 	}
 	try {
-		const funcParams = {
+		const commandParams = {
 			'interaction':interaction,
 			'client':client,
 		};
-		return await command.execute(funcParams);
+		return await command.execute(commandParams);
 	}
 	catch (error) {
 		console.error(error);
@@ -61,22 +61,25 @@ client.on('interactionCreate', async interaction => {
 client.on('messageCreate', async message => {
 	try {
 		const messageCommand = message.content;
-		if (!(messageCommand.charAt(0) == 0)) return;
-		let withoutPrefix = messageCommand.slice(1).trim().toLowerCase();
-		withoutPrefix = withoutPrefix.split(' ').filter(element => (element));
-		const command = client.commands.get(withoutPrefix[0]);
+		if (!messageCommand.startsWith('0') && messageCommand.length === 1) return;
+		let withoutPrefix = messageCommand.slice(1).trim();
+		console.log(withoutPrefix);
+		withoutPrefix = withoutPrefix.split(/\s+/g);
+		const command = client.commands.get(withoutPrefix[0].toLowerCase());
+		console.log(withoutPrefix);
+		console.log(command);
 		if (!command) return;
-		const funcParams = {
+		const commandParams = {
 			'client':client,
 			'message':message,
 			'withoutPrefix':withoutPrefix,
-			'boolean':true,
+			'isOn':true,
 		};
-		if (withoutPrefix[1] == 'off') {
-			funcParams.boolean = false;
-			return await command.execute(funcParams);
+		if (withoutPrefix[1].toLowerCase() == 'off') {
+			commandParams.isOn = false;
+			return await command.execute(commandParams);
 		}
-		return await command.execute(funcParams);
+		return await command.execute(commandParams);
 	}
 	catch (error) {
 		console.error(error);

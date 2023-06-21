@@ -47,8 +47,8 @@ async function changeAvatar(arg) {
 		const request = await axios.patch(url, payload, { headers: headerData });
 		return request;
 	}
-	catch (e) {
-		console.log(e.url);
+	catch (error) {
+		console.error(error);
 	}
 }
 

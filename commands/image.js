@@ -10,8 +10,8 @@ const data = new SlashCommandBuilder()
 		.setDescription('enter ur desciption here')
 		.setRequired(true));
 
-async function execute(funcParams) {
-	const { interaction, message, withoutPrefix } = funcParams;
+async function execute(commandParams) {
+	const { interaction, message, withoutPrefix } = commandParams;
 	const { user, author } = interaction || message;
 	const { id, avatar, username } = user || author;
 	const prompt = interaction ? interaction.options.getString('q') : withoutPrefix.slice(1).join(' ');

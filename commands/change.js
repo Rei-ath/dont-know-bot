@@ -34,20 +34,20 @@ const data = new SlashCommandBuilder()
 	);
 
 
-async function execute(funcParams) {
-	const interaction = funcParams.interaction;
+async function execute(commandParams) {
+	const interaction = commandParams.interaction;
 	if (interaction) {
 		try {
 			const argsLink = await interaction.options.getString('link');
 			const argsKeyword = await interaction.options.getString('keyword');
-			const bool = await interaction.options.getBoolean('nsfw');
+			const nsfwEnabled = await interaction.options.getBoolean('nsfw');
 			if (argsLink) {
 				if (argsLink.includes(' ')) return interaction.channel.reply('no whitespaces allowed');
 				console.log(argsLink, 'arglll');
 				return await changeAvatar(argsLink);
 			}
 			if (argsKeyword?.includes(' ')) return interaction.channel.reply('no whitespaces allowed');
-			if (bool) {
+			if (nsfwEnabled) {
 				const updatedArgsKeyword = argsKeyword ? `${argsKeyword} n` : `n`;
 				await interaction.reply('wait bro inside');
 				return await changeAvatar(updatedArgsKeyword);
@@ -62,7 +62,7 @@ async function execute(funcParams) {
 	}
 	else {
 		try {
-			const withoutPrefix = funcParams.withoutPrefix;
+			const withoutPrefix = commandParams.withoutPrefix;
 			withoutPrefix.shift();
 			const args = withoutPrefix.join(' ');
 			return await changeAvatar(args);
