@@ -1,10 +1,11 @@
-const { openAiToken } = require('../config.json');
+require('dotenv').config();
+const openAiToken = require('../config.json').openAiToken || process.env['openAiToken'];
 const { Configuration, OpenAIApi } = require("openai");
 const { EmbedBuilder, bold } = require('discord.js');
 const configuration = new Configuration({
 	apiKey: openAiToken,
 });
-const { getRandomWaifu } = require('./changeAv');
+const { getRandomWaifu } = require('../utils/randomWaifuImg');
 const openai = new OpenAIApi(configuration);
 
 

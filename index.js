@@ -1,48 +1,57 @@
+require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const { token } = require('./config.json');
-const { Manager } = require('erela.js');
-
+const token = require('./config.json').token || process.env['token'];
+const { Player } = require('discord-player');
+const DeezerExtractor = require('discord-player-deezer').default;
+const { VoiceConnectionStatus } = require('@discordjs/voice');
+// const { trackEmbeds } = require('./embeds/trackEmbed.js');
+// console.log(trackEmbeds);
 const client = new Client({
 	intents: [
 		GatewayIntentBits.DirectMessages,
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildVoiceStates,
 	],
 });
 client.commands = new Collection();
 
+// client.player = new Player(client);
 
-const manager = new Manager({
-	nodes: [
-		{
-			host : "ssl.horizxon.studio",
-			port : 443,
-			password : "horizxon.studio",
-			secure : true,
-		}],
-	send(id, payload) {
-		const guild = client.guilds.cache.get(id);
-		if (guild) guild.shard.send(payload);
-	},
-});
-manager.on("nodeConnect", async node => console.log(`Node ${node.options.identifier} connected`))
-	.on("nodeError", async (node, error) => console.log(`Node ${node.options.identifier} had an error:`, error))
-	.on("trackStart", (player, track) => {
-		client.channels.cache
-			.get(player.textChannel)
-			.send(`Now playing: ${track.title}`);
-	})
-	.on("queueEnd", (player) => {
-		client.channels.cache
-			.get(player.textChannel)
-			.send("Queue has ended.");
-		player.destroy();
+async function InitPlayer() {
+	client.player = new Player(client);
+	client.player.extractors.register(DeezerExtractor);
+
+	await client.player.extractors.loadDefault();
+
+	client.player.events.on('playerStart', async ({ metadata }, track) => {
+		try {
+			// const embed = new trackEmbeds(track).setFieldsBySource(track.source);
+			// const isWaitingForReply = !metadata.replied && metadata.deferred;
+			// if (isWaitingForReply) {
+			// console.log(metadata)
+			// await metadata.editReply({ embeds: [embed] });
+			await metadata.channel.send(`${track}`);
+		}
+		catch (err) {
+			console.log('Error sending embed:', err);
+		}
 	});
 
-client.manager = manager;
+	client.player.events.on('connection', (queue) => {
+		queue.dispatcher.voiceConnection.on('stateChange', (oldState, newState) => {
+			if (oldState.status === VoiceConnectionStatus.Ready && newState.status === VoiceConnectionStatus.Connecting) {
+				queue.dispatcher.voiceConnection.configureNetworking();
+			}
+		});
+	});
+}
+
+InitPlayer();
+
 const commandPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith('.js'));
 try {
@@ -59,16 +68,11 @@ catch (error) {
 
 client.once('ready', async c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
-	manager.init(client.user.id);
 });
 
-
-client.on('raw', (packet) => {
-	if (!['VOICE_STATE_UPDATE', 'VOICE_SERVER_UPDATE'].includes(packet.t)) return;
-	manager.updateVoiceState(packet);
-});
 
 client.on('interactionCreate', async interaction => {
+	console.log(interaction);
 	if (!interaction.isChatInputCommand()) return;
 	const command = interaction.client.commands.get(interaction.commandName);
 	if (!command) {
@@ -95,26 +99,26 @@ client.on('interactionCreate', async interaction => {
 
 
 client.on('messageCreate', async message => {
+	if (message.author.id === `853629533855809596`) {
+		console.log(message, `messaffe`);
+		// console.log(message.embeds, `embeds`);
+		// console.log(message.components, `components`);
+	}
 	try {
 		const messageCommand = message.content;
-		if (!messageCommand.startsWith('0') && messageCommand.length === 1) return;
+		if (messageCommand.charAt(0) !== '0') return;
 		let withoutPrefix = messageCommand.slice(1).trim();
-		console.log(withoutPrefix);
 		withoutPrefix = withoutPrefix.split(/\s+/g);
-		const command = client.commands.get(withoutPrefix[0].toLowerCase());
-		// console.log(withoutPrefix);
-		// console.log(command);
+		const command = client.commands.get(withoutPrefix[0]?.toLowerCase());
 		if (!command) return;
+		console.log(withoutPrefix);
 		const commandParams = {
 			'client':client,
 			'message':message,
-			'withoutPrefix':withoutPrefix,
+			'withoutPrefix': withoutPrefix,
 			'isOn':true,
 		};
-		if (withoutPrefix[1]?.toLowerCase() == 'off') {
-			commandParams.isOn = false;
-			return await command.execute(commandParams);
-		}
+		commandParams.isOn = withoutPrefix[1]?.toLowerCase() == 'off' ? false : true;
 		return await command.execute(commandParams);
 	}
 	catch (error) {
