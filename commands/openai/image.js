@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { getImage } = require('../scripts/openAiQuerryHandler');
-const { metadataExtract } = require('../utils/deconstructor');
+const { getImage } = require('../../scripts/openAiQuerryHandler');
+const { metadataExtract } = require('../../utils/deconstructor');
 
 
 const data = new SlashCommandBuilder()

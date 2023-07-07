@@ -1,25 +1,21 @@
 const metadataExtract = (type, commandParams) => {
-	if (typeof type !== 'string' || typeof commandParams !== 'object') return new Error('type must be string and commandParams must be an object');
-	const typeArr = ['replyTarget', 'userInfo', 'q', 'query'];
-	if (!type || !typeArr.includes(type)) return new Error(`string must have any from these ${typeArr}`);
-	// if (Object.keys({}).length === 0) return new Error(`object must not be empty`);
-	try {
-		const { interaction, message, withoutPrefix } = commandParams;
-		const replyMetadata = interaction || message;
-		if (type === typeArr[0]) return replyMetadata;
-
-		const { user, author } = interaction || message;
-		const userInfo = user || author;
-		if (type === typeArr[1]) return userInfo;
-
-		let prompt ;
-		if (type === typeArr[2]) return prompt = interaction ? interaction.options.getString('q') : withoutPrefix.slice(1).join(' ');
-		prompt = interaction ? interaction.options.getString('query') : withoutPrefix.slice(1).join(' ');
-
-		if (type === typeArr[3]) return prompt;
+	if (typeof type !== 'string' || typeof commandParams !== 'object') {
+		throw new Error('Type must be a string and commandParams must be an object');
 	}
-	catch (error) {
-		console.log(error);
+	const { interaction, message, withoutPrefix } = commandParams;
+	switch (type) {
+	case 'replyTarget':
+		return interaction || message;
+	case 'userInfo': {
+		const { user, author } = interaction || message;
+		return user || author;
+	}
+	case 'q':
+		return interaction ? interaction.options.getString('q') : withoutPrefix.slice(1).join(' ');
+	case 'query':
+		return interaction ? interaction.options.getString('query') : withoutPrefix.slice(1).join(' ');
+	default:
+		throw new Error(`Invalid type. Must be one of: replyTarget, userInfo, q, query`);
 	}
 };
 

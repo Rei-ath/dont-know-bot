@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { guessByImage } = require('../scripts/rinBotHandler');
-const { metadataExtract } = require('../utils/deconstructor');
+const { guessByImage } = require('../../scripts/rinBotHandler');
+const { metadataExtract } = require('../../utils/deconstructor');
 
 
 const data = new SlashCommandBuilder()

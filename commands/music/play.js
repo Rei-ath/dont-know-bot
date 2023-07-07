@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { streamAudio } = require('../scripts/streamSong');
+const { streamAudio } = require('../../scripts/streamSong');
 const { joinVoiceChannel } = require('@discordjs/voice');
-const { metadataExtract } = require('../utils/deconstructor');
+const { metadataExtract } = require('../../utils/deconstructor');
 
 
 const data = new SlashCommandBuilder()

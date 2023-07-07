@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, codeBlock } = require('discord.js');
-const { getAnswer } = require('../scripts/openAiQuerryHandler');
-const { metadataExtract } = require('../utils/deconstructor');
+const { getAnswer } = require('../../scripts/openAiQuerryHandler');
+const { metadataExtract } = require('../../utils/deconstructor');
 
 const data = new SlashCommandBuilder()
 	.setName('ask')

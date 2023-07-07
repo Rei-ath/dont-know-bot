@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { metadataExtract } = require('../utils/deconstructor');
+const { metadataExtract } = require('../../utils/deconstructor');
 const { ButtonBuilder, ButtonStyle, EmbedBuilder, ActionRowBuilder } = require('discord.js');
-const { prepareSongTitle } = require('../utils/songUtils');
+const { prepareSongTitle } = require('../../utils/songUtils');
 
 
 const data = new SlashCommandBuilder()

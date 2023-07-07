@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { metadataExtract } = require('../utils/deconstructor');
+const { metadataExtract } = require('../../utils/deconstructor');
 const { useQueue } = require('discord-player');
 
 

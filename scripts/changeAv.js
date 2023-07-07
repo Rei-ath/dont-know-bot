@@ -1,4 +1,3 @@
-require('dotenv').config();
 const axios = require('axios');
 const auth = require('../config.json').auth || process.env['auth'];
 const clientId = require('../config.json').clientId || process.env['clientId'];

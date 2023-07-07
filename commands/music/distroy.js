@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { getVoiceConnection } = require('@discordjs/voice');
-const { metadataExtract } = require('../utils/deconstructor');
+const { metadataExtract } = require('../../utils/deconstructor');
 
 const data = new SlashCommandBuilder()
 	.setName('distroy')

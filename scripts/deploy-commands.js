@@ -4,16 +4,19 @@ const token = require('../config.json').token || process.env['token'];
 const fs = require('node:fs');
 const path = require('node:path');
 const commands = [];
-const commandsPath = path.join(__dirname, '../commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const commandPath = path.join(__dirname, '../commands');
+const commandFolders = fs.readdirSync(commandPath).filter(file => !file.endsWith('.js'));
 
 async function refreshCommand() {
 	try {
-		for (const file of commandFiles) {
-			const command = require(`../commands/${file}`);
-			console.log(command);
-			console.log(file);
-			commands.push(command.data.toJSON());
+		for (const folder of commandFolders) {
+			const filesPath = path.join(commandPath, folder);
+			const commandFiles = fs.readdirSync(filesPath).filter(file => file.endsWith('.js'));
+			for (const files of commandFiles) {
+				const commandLocation = path.join(filesPath, files);
+				const command = require(commandLocation);
+				commands.push(command.data.toJSON());
+			}
 		}
 		const rest = new REST({ version: '10' }).setToken(token);
 		console.log(commands);
@@ -28,7 +31,6 @@ async function refreshCommand() {
 		console.error(error);
 	}
 }
-
 module.exports = {
 	refreshCommand,
 };

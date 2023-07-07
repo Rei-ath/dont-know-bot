@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { useQueue } = require('discord-player');
-// const { useResume } = require('../utils/songUtils');
-const { metadataExtract } = require('../utils/deconstructor');
+// const { useResume } = require('../../utils/songUtils');
+const { metadataExtract } = require('../../utils/deconstructor');
 
 const data = new SlashCommandBuilder()
 	.setName('pause')
