@@ -6,8 +6,8 @@ const token = require('./config.json').token || process.env['token'];
 const { Player } = require('discord-player');
 const DeezerExtractor = require('discord-player-deezer').default;
 const { VoiceConnectionStatus } = require('@discordjs/voice');
-// const { trackEmbeds } = require('./embeds/trackEmbed.js');
-// console.log(trackEmbeds);
+const playEmbed = require('./embeds/playEmbed');
+
 const client = new Client({
 	intents: [
 		GatewayIntentBits.DirectMessages,
@@ -18,23 +18,18 @@ const client = new Client({
 	],
 });
 client.commands = new Collection();
-
-// client.player = new Player(client);
+client.buttons = new Collection();
 
 async function InitPlayer() {
+
 	client.player = new Player(client);
 	client.player.extractors.register(DeezerExtractor);
-
 	await client.player.extractors.loadDefault();
 
 	client.player.events.on('playerStart', async ({ metadata }, track) => {
 		try {
-			// const embed = new trackEmbeds(track).setFieldsBySource(track.source);
-			// const isWaitingForReply = !metadata.replied && metadata.deferred;
-			// if (isWaitingForReply) {
-			// console.log(metadata)
-			// await metadata.editReply({ embeds: [embed] });
-			await metadata.channel.send(`${track}`);
+			const playing = new playEmbed(track).prepareSongStartedEmbed();
+			await metadata.channel.send({ embeds: [playing] });
 		}
 		catch (err) {
 			console.log('Error sending embed:', err);
@@ -57,14 +52,19 @@ const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith('.
 try {
 	for (const file of commandFiles) {
 		const filePath = path.join(commandPath, file);
-		const command = require(filePath);
-		client.commands.set(command.data.name, command);
+		const fileToAdd = require(filePath);
+		client.commands.set(fileToAdd.data.name, fileToAdd);
+		const buttons = fileToAdd.row?.components;
+		if (buttons) {
+			for (const button of buttons) {
+				client.buttons.set(button.data.custom_id, fileToAdd.execute);
+			}
+		}
 	}
 }
 catch (error) {
 	console.log(error);
 }
-
 
 client.once('ready', async c => {
 	console.log(`Ready! Logged in as ${c.user.tag}`);
@@ -72,19 +72,29 @@ client.once('ready', async c => {
 
 
 client.on('interactionCreate', async interaction => {
-	console.log(interaction);
-	if (!interaction.isChatInputCommand()) return;
+	// console.log(interaction);
 	const command = interaction.client.commands.get(interaction.commandName);
+	const custom_id = interaction.client.buttons.get(interaction.customId);
+	// console.log(custom_id);
 	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`);
-		return;
+		console.log(`it was not chatinteraction`);
+		// return;
+	}
+	else if (!custom_id) {
+		console.log('naa dude no button found');
 	}
 	try {
 		const commandParams = {
 			'interaction':interaction,
 			'client':client,
+			'button':false,
 		};
-		return await command.execute(commandParams);
+		if (command) {return await command.execute(commandParams);}
+		else if (custom_id) {
+			commandParams.button = true;
+			// console.log(commandParams.button);
+			return custom_id(commandParams);
+		}
 	}
 	catch (error) {
 		console.error(error);
@@ -99,11 +109,6 @@ client.on('interactionCreate', async interaction => {
 
 
 client.on('messageCreate', async message => {
-	if (message.author.id === `853629533855809596`) {
-		console.log(message, `messaffe`);
-		// console.log(message.embeds, `embeds`);
-		// console.log(message.components, `components`);
-	}
 	try {
 		const messageCommand = message.content;
 		if (messageCommand.charAt(0) !== '0') return;
@@ -128,3 +133,4 @@ client.on('messageCreate', async message => {
 
 
 client.login(token);
+

@@ -1,11 +1,11 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { useQueue } = require('discord-player');
-// const { useResume } = require('../utils/songUtils');
+const { useResume } = require('../utils/songUtils');
 const { metadataExtract } = require('../utils/deconstructor');
 
 const data = new SlashCommandBuilder()
-	.setName('pause')
-	.setDescription('Pause a track');
+	.setName('resume')
+	.setDescription('resumes a track');
 
 async function execute(commandParams) {
 	const replyTarget = await metadataExtract('replyTarget', commandParams);
@@ -14,10 +14,9 @@ async function execute(commandParams) {
 	try {
 		const queue = useQueue(replyTarget.guildId);
 		queue.setMetadata(replyTarget);
-		// queue.node.isPaused();
-		queue.node.setPaused(true);
-		return await replyTarget.reply('PAUSED TRACKS');
-
+		// queue.node.skip();
+		useResume(replyTarget.guild.id);
+		return await replyTarget.reply('REUSMED TRACKS');
 	}
 	catch (error) {
 		console.error(error);

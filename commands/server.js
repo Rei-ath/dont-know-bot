@@ -5,8 +5,8 @@ const data = new SlashCommandBuilder()
 	.setName('server')
 	.setDescription('Provides information about the server.');
 
-async function execute(interaction) {
-	return await interaction.reply(`This server is ${interaction.guild.name} and has ${interaction.guild.memberCount} members.`);
+async function execute(commandParams) {
+	return await commandParams.interaction.reply(`This server is ${commandParams.interaction.guild.name} and has ${commandParams.interaction.guild.memberCount} members.`);
 }
 
 module.exports = {

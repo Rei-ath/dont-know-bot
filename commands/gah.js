@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { guessByHints } = require('../scripts/rinBotHandler');
+const { metadataExtract } = require('../utils/deconstructor');
 
 
 const data = new SlashCommandBuilder()
@@ -15,7 +16,7 @@ const eventEmitter = async message => {
 		console.log(title);
 		if (message.author.id == "429656936435286016" && title.includes("Hint")) {
 			const responseEmbed = await guessByHints(title);
-			console.log(responseEmbed);
+			// console.log(responseEmbed);
 			return await message.reply({ embeds: [responseEmbed] });
 		}
 	}
@@ -25,15 +26,15 @@ const eventEmitter = async message => {
 };
 
 async function execute(commandParams) {
-	const { interaction, client, isOn, message } = commandParams;
+	const { client, isOn,interaction } = commandParams;
+	const replyTarget = metadataExtract('replyTarget', commandParams);
 	const guessAnimeByHintEnabled = interaction ? interaction.options.getBoolean('toggle') : isOn ;
-	const targetReply = interaction ? interaction : message;
 	try {
 		if (!guessAnimeByHintEnabled) {
 			client.off('messageCreate', eventEmitter);
-			return await targetReply.reply('Guess anime stopped');
+			return await replyTarget.reply('Guess anime stopped');
 		}
-		await targetReply.reply('Guess anime started');
+		await replyTarget.reply('Guess anime started');
 		return await client.on('messageCreate', eventEmitter);
 	}
 	catch (error) {

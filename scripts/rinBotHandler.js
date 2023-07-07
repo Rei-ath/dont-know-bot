@@ -9,9 +9,7 @@ async function guessByHints(hintMessage) {
 			.setThumbnail('https://cdn.discordapp.com/emojis/1043810983707164672.webp')
 			.setFooter({ text: 'Jang Cutest', iconURL: 'https://cdn.discordapp.com/emojis/1048596660093190164.webp' })
 			.setTimestamp();
-		console.log(hintString);
 		const hintIndices = hintString.split("_").filter(Boolean);
-		console.log(hintIndices);
 		const matchedAnimeNames = titles.filter(element =>
 			element && hintIndices.every((item, index) =>
 				element.includes(item) && element.indexOf(item) === hintString.indexOf(item, index),
@@ -44,7 +42,6 @@ async function guessByHints(hintMessage) {
 				console.log(matchedAnimeNames.length, 'nothing');
 			}
 		}
-		console.log(animeEmbedList);
 		return animeEmbedList;
 	}
 	catch (error) {

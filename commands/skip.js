@@ -1,6 +1,7 @@
 const { useQueue } = require('discord-player');
 const { SlashCommandBuilder } = require('discord.js');
 const { useResume } = require('../utils/songUtils');
+const { metadataExtract } = require('../utils/deconstructor');
 
 
 const data = new SlashCommandBuilder()
@@ -9,21 +10,20 @@ const data = new SlashCommandBuilder()
 
 
 async function execute(commandParams) {
-	const { interaction, message } = commandParams;
-	// const { id, avatar, username } = user || author;
-	const replyTarget = interaction || message;
+	const replyTarget = metadataExtract('replyTarget', commandParams);
+	const voice = replyTarget.member.voice.channelId;
+	if (!voice) return replyTarget.channel.send('Join a Channel First');
 	try {
 		const queue = useQueue(replyTarget.guildId);
 		queue.setMetadata(replyTarget);
 		queue.node.skip();
 		useResume(replyTarget.guild.id);
+		return await replyTarget.channel.send('SKIPPED TRACK');
 	}
 	catch (error) {
 		console.log(error);
 	}
 }
-
-
 
 
 module.exports = {

@@ -1,17 +1,17 @@
-require('dotenv').config();
 const openAiToken = require('../config.json').openAiToken || process.env['openAiToken'];
 const { Configuration, OpenAIApi } = require("openai");
-const { EmbedBuilder, bold } = require('discord.js');
+const { bold } = require('discord.js');
 const configuration = new Configuration({
 	apiKey: openAiToken,
 });
-const { getRandomWaifu } = require('../utils/randomWaifuImg');
+const defaultEmbed = require('../embeds/embedTemplate');
 const openai = new OpenAIApi(configuration);
 
 
-async function getAnswer(prompt) {
-	const responseEmbed = new EmbedBuilder()
-		.setTimestamp();
+async function getAnswer(prompt, commandParams) {
+	const Embed = new defaultEmbed(commandParams);
+	await Embed.setInfo();
+	// console.log(await Embed)
 	try {
 		const response = await openai.createCompletion({
 			model: "text-davinci-003",
@@ -21,25 +21,22 @@ async function getAnswer(prompt) {
 			n: 1,
 		});
 		const textResponse = response.data.choices[0].text;
-		responseEmbed.setTitle(bold(prompt))
-			.setThumbnail(await getRandomWaifu())
-			.setFooter({ text: 'Jang <3 ||', iconURL: await getRandomWaifu() })
+		console.log(textResponse);
+		Embed.setTitle(bold(prompt))
 			.setDescription(textResponse);
-		return responseEmbed;
+		return Embed;
 	}
 	catch (error) {
-		responseEmbed.setTitle(bold(prompt))
-			.setThumbnail(await getRandomWaifu())
-			.setFooter({ text: 'Jang <3 ||' })
-			.setDescription(`sorry error occured`);
-		return responseEmbed;
+		console.log(Embed);
+		await Embed.setError();
+		return Embed;
 	}
 }
 
 
-async function getImage(prompt) {
-	const responseEmbed = new EmbedBuilder()
-		.setTimestamp();
+async function getImage(prompt, commandParams) {
+	const Embed = new defaultEmbed(commandParams);
+	await Embed.setInfo();
 	try {
 		const response = await openai.createImage({
 			prompt:prompt,
@@ -48,17 +45,13 @@ async function getImage(prompt) {
 		});
 		const promptUrl = response.data.data[0].url;
 		console.log(promptUrl);
-		responseEmbed.setTitle(`${bold(prompt)}`)
+		Embed.setTitle(bold(prompt))
 			.setImage(promptUrl);
-		return responseEmbed;
+		return Embed;
 	}
 	catch (error) {
-		responseEmbed.setTitle(bold(prompt))
-			.setImage(await getRandomWaifu('bully'))
-			.setThumbnail(await getRandomWaifu('smug'))
-			.setFooter({ text: '[ Jang ]', iconURL: await getRandomWaifu('poke') })
-			.setDescription(`sorry error occured`);
-		return responseEmbed;
+		await Embed.setError();
+		return Embed;
 	}
 }
 module.exports = {

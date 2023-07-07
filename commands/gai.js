@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { guessByImage } = require('../scripts/rinBotHandler');
+const { metadataExtract } = require('../utils/deconstructor');
 
 
 const data = new SlashCommandBuilder()
@@ -26,16 +27,16 @@ const eventEmitter = async message => {
 };
 
 async function execute(commandParams) {
-	const { interaction, client, isOn, message } = commandParams;
+	const { client, isOn,interaction } = commandParams;
+	const replyTarget = metadataExtract('replyTarget', commandParams);
 	const guessAnimeByImgEnabled = interaction ? interaction.options.getBoolean('toggle') : isOn ;
-	const targetReply = interaction ? interaction : message;
 	console.log(guessAnimeByImgEnabled);
 	try {
 		if (!guessAnimeByImgEnabled) {
 			await client.off('messageCreate', eventEmitter);
-			return await targetReply.reply('Guess anime stopped');
+			return await replyTarget.reply('Guess anime stopped');
 		}
-		await targetReply.reply('Guess anime started');
+		await replyTarget.reply('Guess anime started');
 		return await client.on('messageCreate', eventEmitter);
 	}
 	catch (error) {

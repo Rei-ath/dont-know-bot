@@ -10,12 +10,10 @@ const useMoveToStart = ({ from, num, guildId, withSkip = true }) => {
 	if (isAlreadyInQueue) {
 		return false;
 	}
-	// Move track from queue[fromIdx...toIdx] to start position
 	for (let fromIdx = from, startPos = 0; num > 0; ++fromIdx, ++startPos, --num) {
 		queue.node.move(fromIdx, startPos);
 	}
 	if (withSkip) {
-		// Play next song from the queue
 		queue.node.skip();
 	}
 	return true;
@@ -26,8 +24,17 @@ const useResume = (guildId) => {
 	if (queue && queue.node.isPaused()) {
 		queue.node.setPaused(false);
 	}
+	if (!queue) {
+		queue.setRepeatMode(3);
+		queue.node.setPaused(false);
+	}
+};
+
+const prepareSongTitle = ({ title, author }, index) => {
+	return `[${index + 1}] ` + title + ' by ' + '**' + author + '**';
 };
 
 module.exports = {
-	useMoveToStart, useResume,
+	useMoveToStart, useResume,prepareSongTitle,
+	// repeatMode
 };
