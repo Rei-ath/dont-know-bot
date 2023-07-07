@@ -1,5 +1,5 @@
 const axios = require('axios');
-const auth = require('../config.json').auth || process.env['auth'];
+const auth =  process.env['auth']||require('../config.json').auth;
 const clientId = require('../config.json').clientId || process.env['clientId'];
 const { getRandomWaifu } = require('../utils/randomWaifuImg');
 
