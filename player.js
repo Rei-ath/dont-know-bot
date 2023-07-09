@@ -1,7 +1,8 @@
 const { Player } = require('discord-player');
 const DeezerExtractor = require('discord-player-deezer').default;
-const { VoiceConnectionStatus } = require('@discordjs/voice');
+const { VoiceConnectionStatus, joinVoiceChannel, getVoiceConnection } = require('@discordjs/voice');
 const playEmbed = require('./embeds/playEmbed');
+const { useResume } = require('./utils/songUtils');
 
 async function InitPlayer(client) {
 
@@ -20,9 +21,24 @@ async function InitPlayer(client) {
 
 	client.player.events.on('connection', (queue) => {
 		queue.dispatcher.voiceConnection.on('stateChange', (oldState, newState) => {
+			let VCConnection = getVoiceConnection(queue.channel.guildId);
+			if (!VCConnection) {
+				joinVoiceChannel({
+					channelId: queue.channel.id,
+					guildId: queue.channel.guildId,
+					adapterCreator: queue.channel.guild.voiceAdapterCreator,
+				});
+
+				VCConnection = getVoiceConnection(queue.channel.guild.id);
+				useResume(queue.channel.guildId);
+			}
+			if (!VCConnection) {
+				return { status: false, reason: 'Can\'t connect to a voice channel' };
+			}
 			if (oldState.status === VoiceConnectionStatus.Ready && newState.status === VoiceConnectionStatus.Connecting) {
 				queue.dispatcher.voiceConnection.configureNetworking();
 			}
+			return {status:true};
 		});
 	});
 }

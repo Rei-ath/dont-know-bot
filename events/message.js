@@ -5,8 +5,8 @@ async function execute(message) {
 	if (!message) return;
 	try {
 		const messageCommand = message.content;
-		if (messageCommand.charAt(0) !== '0') return;
-		let withoutPrefix = messageCommand.slice(1).trim();
+		if (messageCommand.indexOf('02') !== 0) return;
+		let withoutPrefix = messageCommand.slice(2).trim();
 		withoutPrefix = withoutPrefix.split(/\s+/g);
 		const command = message.client.commands.get(withoutPrefix[0]?.toLowerCase());
 		if (!command) return;

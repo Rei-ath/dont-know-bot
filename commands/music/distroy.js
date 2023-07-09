@@ -5,6 +5,7 @@ const { metadataExtract } = require('../../utils/deconstructor');
 const data = new SlashCommandBuilder()
 	.setName('distroy')
 	.setDescription('Bot will exit from voice channel');
+
 async function execute(commandParams) {
 	const replyTarget = await metadataExtract('replyTarget', commandParams);
 	const voice = replyTarget.member.voice.channelId;
@@ -13,7 +14,6 @@ async function execute(commandParams) {
 	if (!connection) {
 		return await replyTarget.reply('You aren`n in voice channel');
 	}
-
 	commandParams.client.player.voiceUtils.disconnect(connection);
 	await replyTarget.reply('Bot disconnected from voice channel');
 }

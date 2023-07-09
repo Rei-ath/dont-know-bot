@@ -41,7 +41,7 @@ async function streamAudio(client, replyTarget, youtubeURL, cp) {
 			author: {
 				name: 'ADDED TO QUEE',
 			} };
-		return await replyTarget.channel.send({embeds:[trackAddedEmbed]})
+		return await replyTarget.channel.send({ embeds:[trackAddedEmbed] });
 	}
 	catch (error) {
 		console.error('Error streaming audio:', error);
