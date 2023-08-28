@@ -1,7 +1,15 @@
 const { Events } = require('discord.js');
 
 const name = Events.MessageCreate;
+
+/**
+     * Executes a command based on the provided message.
+     *
+     * @param {object} message - The message object containing the command.
+     * @returns {Promise} - A promise that resolves with the result of the command execution.
+     */
 async function execute(message) {
+
 	if (!message) return;
 	try {
 		const messageCommand = message.content;
@@ -12,10 +20,10 @@ async function execute(message) {
 		if (!command) return;
 		console.log(withoutPrefix);
 		const commandParams = {
-			'client':message.client,
-			'message':message,
+			'client': message.client,
+			'message': message,
 			'withoutPrefix': withoutPrefix,
-			'isOn':true,
+			'isOn': true,
 		};
 		commandParams.isOn = withoutPrefix[1]?.toLowerCase() == 'off' ? false : true;
 		return await command.execute(commandParams);

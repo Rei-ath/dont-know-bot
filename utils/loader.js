@@ -1,6 +1,12 @@
+/**
+ * Loads commands and buttons for a Discord bot using the Discord.js library.
+ * @module code_under_test
+ */
+
 const { GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
+
 const options = {
 	intents: [
 		GatewayIntentBits.DirectMessages,
@@ -11,7 +17,11 @@ const options = {
 	],
 };
 
-
+/**
+ * Loads commands for the bot.
+ * @param {Object} client - The Discord client object.
+ * @returns {Promise<void>}
+ */
 async function loadCommands(client) {
 	client.commands = new Collection();
 	client.buttons = new Collection();
@@ -39,7 +49,11 @@ async function loadCommands(client) {
 	}
 }
 
-
+/**
+ * Loads event files for the bot.
+ * @param {Object} client - The Discord client object.
+ * @returns {Promise<void>}
+ */
 async function loadButtons(client) {
 	const eventsPath = path.join(__dirname, '../events');
 	const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
@@ -54,10 +68,14 @@ async function loadButtons(client) {
 	}
 }
 
+/**
+ * Loads all commands and buttons for the bot.
+ * @param {Object} client - The Discord client object.
+ * @returns {Promise<void>}
+ */
 async function loadAll(client) {
 	await loadCommands(client);
 	await loadButtons(client);
 }
 
 module.exports = { loadAll, options };
-

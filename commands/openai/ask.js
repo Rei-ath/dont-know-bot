@@ -11,7 +11,16 @@ const data = new SlashCommandBuilder()
 		.setRequired(true));
 
 
+/**
+     * Executes a slash command.
+     *
+     * @param {object} commandParams - An object containing the parameters passed to the slash command.
+     * @param {object} commandParams.replyTarget - The reply target object.
+     * @param {string} commandParams.q - The prompt for the command.
+     * @returns {Promise} - A promise that resolves when the command execution is complete.
+     */
 async function execute(commandParams) {
+
 	const replyTarget = await metadataExtract('replyTarget', commandParams);
 	const prompt = await metadataExtract('q', commandParams);
 	console.log(prompt);

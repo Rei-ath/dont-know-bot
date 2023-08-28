@@ -10,6 +10,13 @@ const data = new SlashCommandBuilder()
 	.setName('help')
 	.setDescription('help menu');
 
+/**
+     * Executes the command and returns the help menu as an embedded message.
+     *
+     * @param {Object} commandParams - The command parameters.
+     * @returns {Promise} A promise that resolves with the reply containing the help menu as an embedded message.
+     * @throws {Error} If an error occurs during execution.
+*/
 async function execute(commandParams) {
 	const replyTarget = await metadataExtract('replyTarget', commandParams);
 	const arr = [];
@@ -23,19 +30,19 @@ async function execute(commandParams) {
 			for (const files of commandFiles) {
 				const commandLocation = path.join(filesPath, files);
 				const command = require(commandLocation);
-				const name = command.data.name;
-				const discription = command.data?.description;
-				const optionnames = command.data.options.map(option => option);
+				const { name, description, options } = command.data;
+				const optionNames = options.map(option => option.name);
 				const obj = {
-					name, discription, optionnames:optionnames.length === 0 ? '' : optionnames,
+					name, description, optionNames: optionNames.length === 0 ? '' : optionNames,
 				};
 				arr.push(obj);
 			}
 		}
 		const helpCommands = arr.map(option => {
-			if (option.optionnames.length === 0) return `${option.name} - ${option.discription}\n`;
-			return `${option.name} - ${option.discription} [${option.optionnames.map(o => {return o.type === 5 ? ` ${o.name}, off` : o.name;})}]\n`;
+			const optionNames = option.optionNames.map(o => o.type === 5 ? ` ${o.name}, off` : o.name).join(', ');
+			return `${option.name} - ${option.description}${optionNames ? ` [${optionNames}]` : ''}\n`;
 		}).join('');
+
 		helpEmbed.setTitle('Help Menu').setDescription(helpCommands).setThumbnail();
 		return replyTarget.reply({ embeds:[helpEmbed] });
 	}

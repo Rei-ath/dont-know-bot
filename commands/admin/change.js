@@ -35,48 +35,57 @@ const data = new SlashCommandBuilder()
 	);
 
 
+/**
+ * Executes the appropriate subcommand to change the avatar of a Discord bot.
+ * @param {Object} commandParams - An object containing information about the command.
+ * @param {Object} commandParams.interaction - The interaction object (if any).
+ * @param {string[]} commandParams.withoutPrefix - The command arguments without the prefix.
+ * @param {Object} commandParams.replyTarget - The reply target object.
+ * @returns {Promise} - A promise that resolves with the result of the executed subcommand or a message indicating that only authorized users are allowed.
+ */
 async function execute(commandParams) {
 	const interaction = commandParams.interaction;
 	const { id } = await metadataExtract('userInfo', commandParams);
 	const replyTarget = await metadataExtract('replyTarget', commandParams);
-	if (id === '532798408340144148' || id === '991218096541020220') {
+
+	const authorizedUserIds = process.env['admins'] || require('../../config.json').admins;
+	const isAuthorizedUser = authorizedUserIds.includes(id);
+
+	if (!isAuthorizedUser) {
+		return await replyTarget.reply('Only Rei and Jang are allowed to execute this command.');
+	}
+
+	try {
 		if (interaction) {
-			try {
-				const argsLink = await interaction.options.getString('link');
-				const argsKeyword = await interaction.options.getString('keyword');
-				const nsfwEnabled = await interaction.options.getBoolean('nsfw');
-				if (argsLink) {
-					if (argsLink.includes(' ')) return interaction.channel.reply('no whitespaces allowed');
-					console.log(argsLink, 'arglll');
-					return await changeAvatar(argsLink);
+			const argsLink = await interaction.options.getString('link');
+			const argsKeyword = await interaction.options.getString('keyword');
+			const nsfwEnabled = await interaction.options.getBoolean('nsfw');
+
+			if (argsLink) {
+				if (argsLink.includes(' ')) {
+					return interaction.channel.reply('No whitespaces allowed in the link.');
 				}
-				if (argsKeyword?.includes(' ')) return interaction.channel.reply('no whitespaces allowed');
-				if (nsfwEnabled) {
-					const updatedArgsKeyword = argsKeyword ? `${argsKeyword} n` : `n`;
-					await interaction.reply('wait bro inside');
-					return await changeAvatar(updatedArgsKeyword);
-				}
-				await interaction.reply('wait bro outside');
-				return await changeAvatar(argsKeyword);
+				return await changeAvatar(argsLink);
 			}
-			catch (error) {
-				console.error(error);
+
+			if (argsKeyword?.includes(' ')) {
+				return interaction.channel.reply('No whitespaces allowed in the keyword.');
 			}
+
+			const updatedArgsKeyword = nsfwEnabled ? `${argsKeyword || ''} n` : argsKeyword;
+			const replyMessage = nsfwEnabled ? 'Wait bro inside' : 'Wait bro outside';
+
+			await interaction.reply(replyMessage);
+			return await changeAvatar(updatedArgsKeyword);
 		}
 		else {
-			try {
-				const withoutPrefix = commandParams.withoutPrefix;
-				withoutPrefix.shift();
-				const args = withoutPrefix.join(' ');
-				return await changeAvatar(args);
-			}
-			catch (error) {
-				console.error(error);
-			}
+			const withoutPrefix = commandParams.withoutPrefix.slice(1);
+			const args = withoutPrefix.join(' ');
+			return await changeAvatar(args);
 		}
 	}
-	else {
-		return await replyTarget.reply('only rei and jang allowed');
+	catch (error) {
+		console.error(error);
 	}
 }
 

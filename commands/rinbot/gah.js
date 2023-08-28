@@ -25,10 +25,20 @@ const eventEmitter = async message => {
 	}
 };
 
+/**
+     * Executes the guessing of anime based on hints.
+     *
+     * @param {Object} commandParams - The command parameters.
+     * @param {Object} commandParams.client - The Discord client object.
+     * @param {boolean} commandParams.isOn - The boolean flag indicating if the guessing is on or off.
+     * @param {Object} commandParams.interaction - The Discord interaction object.
+     * @returns {Promise} A promise that resolves to a message indicating the status of the guessing.
+     */
 async function execute(commandParams) {
-	const { client, isOn,interaction } = commandParams;
+
+	const { client, isOn, interaction } = commandParams;
 	const replyTarget = metadataExtract('replyTarget', commandParams);
-	const guessAnimeByHintEnabled = interaction ? interaction.options.getBoolean('toggle') : isOn ;
+	const guessAnimeByHintEnabled = interaction ? interaction.options.getBoolean('toggle') : isOn;
 	try {
 		if (!guessAnimeByHintEnabled) {
 			client.off('messageCreate', eventEmitter);
