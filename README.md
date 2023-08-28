@@ -18,7 +18,20 @@ git clone <repository_url>
 npm install
 ```
 
-3. Create and configure the `config.json` file:
+3.Create the `.env` file:
+- Create a new `.env` file in the project root directory.
+- Open the `.env` file and add the following keys:
+
+```markdown
+# Set environment variables
+token=YOUR_DISCORD_BOT_TOKEN
+clientId=YOUR_DISCORD_CLIENT_ID
+guildId=YOUR_DISCORD_GUILD_ID
+openAiToken=YOUR_OPENAI_API_TOKEN
+
+## OR 
+
+Create and configure the `config.json` file:
 - Create a new `config.json` file in the project root directory.
 - Open the `config.json` file and add the following keys:
 
