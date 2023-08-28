@@ -9,7 +9,7 @@ To run the Don't Know Bot, follow these steps:
 1. Clone the repository:
 
 ```markdown
-git clone <repository_url>
+git clone [<repository_url>](https://github.com/Rei-ath/dont-know-bot.git)
 ```
 
 2. Install the required dependencies:
@@ -28,7 +28,7 @@ token=YOUR_DISCORD_BOT_TOKEN
 clientId=YOUR_DISCORD_CLIENT_ID
 guildId=YOUR_DISCORD_GUILD_ID
 openAiToken=YOUR_OPENAI_API_TOKEN
-
+```
 ## OR 
 
 Create and configure the `config.json` file:
